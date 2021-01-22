@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { HashRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import QueryProvider from './providers/QueryProvider';
+import './assets/css/styles.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <HashRouter>
+      <QueryProvider>
+        <App />
+      </QueryProvider>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
