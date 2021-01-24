@@ -5,6 +5,7 @@ import Messages from '../containers/Messages';
 import Request from '../containers/Request';
 import Schedule from '../containers/Schedule';
 import Trade from '../containers/Trade';
+import Tests from '../tests';
 import NoMatch from './NoMatch';
 
 function Navigation() {
@@ -27,6 +28,9 @@ function Navigation() {
       </Route>
       <Route path="/messages">
         <Messages />
+      </Route>
+      <Route path="/tests">
+        <Tests />
       </Route>
       <Route path="*">
         <NoMatch />

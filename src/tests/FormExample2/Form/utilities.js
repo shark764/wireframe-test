@@ -1,0 +1,33 @@
+export const types = [
+  { value: 'Anti-Materiel Rifle', text: 'Anti-Materiel Rifle' },
+  { value: 'Assault Rifle', text: 'Assault Rifle' },
+  { value: 'General Purpose Machine Gun', text: 'General Purpose Machine Gun' },
+  { value: 'Heavy Machine Gun', text: 'Heavy Machine Gun' },
+  { value: 'Pistol', text: 'Pistol' },
+  { value: 'Recoilless Gun', text: 'Recoilless Gun' },
+  { value: 'Rifle', text: 'Rifle' },
+  { value: 'Rocket Launcher', text: 'Rocket Launcher' },
+  { value: 'Sniper Rifle', text: 'Sniper Rifle' },
+  { value: 'Stand-Alone Grenade Launcher', text: 'Stand-Alone Grenade Launcher' },
+  { value: 'Sub-machine Gun', text: 'Sub-machine Gun' },
+  { value: 'Under-Barrel Grenade Launcher', text: 'Under-Barrel Grenade Launcher' },
+];
+
+export const calibres = [
+  { value: '0.45', text: '0.45' },
+  { value: '12.7x107mm', text: '12.7x107mm' },
+  { value: '12.7x99mm', text: '12.7x99mm' },
+  { value: '40mm', text: '40mm' },
+  { value: '40x46mm', text: '40x46mm' },
+  { value: '5.45x39mm', text: '5.45x39mm' },
+  { value: '5.56x45mm', text: '5.56x45mm' },
+  { value: '66mm', text: '66mm' },
+  { value: '7.62x25mm', text: '7.62x25mm' },
+  { value: '7.62x39mm', text: '7.62x39mm' },
+  { value: '7.62x51mm', text: '7.62x51mm' },
+  { value: '7.62x54R', text: '7.62x54R' },
+  { value: '7.92x57mm', text: '7.92x57mm' },
+  { value: '73mm', text: '73mm' },
+  { value: '82mm', text: '82mm' },
+  { value: '9x19mm', text: '9x19mm' },
+];

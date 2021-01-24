@@ -15,7 +15,7 @@ const Header = styled.header`
 const Nav = styled.nav`
   grid-area: nav;
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(6, auto);
   align-items: center;
   justify-items: center;
 `;
@@ -59,6 +59,7 @@ const links = [
   { label: 'REQUEST', to: '/request' },
   { label: 'TRADE', to: '/trade' },
   { label: 'MESSAGES', to: '/messages' },
+  { label: 'TESTS', to: '/tests' },
 ];
 
 function PageHeader() {
