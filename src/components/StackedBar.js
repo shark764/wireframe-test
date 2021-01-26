@@ -24,24 +24,12 @@ const Column = styled.div.attrs((props) => ({
 
 function StackedBar({ columns }) {
   return (
-    <Meter
-      gridColValues={columns
-        .map((column) => {
-          return `${column.value}fr`;
-        })
-        .join(' ')}
-    >
-      {columns.map((column) => {
-        return (
-          <Column
-            bgColor={column.bgColor}
-            title={column.name}
-            key={column.name}
-          >
-            {column.value}
-          </Column>
-        );
-      })}
+    <Meter gridColValues={columns.map((column) => `${column.value}fr`).join(' ')}>
+      {columns.map((column) => (
+        <Column bgColor={column.bgColor} title={column.name} key={column.name}>
+          {column.value}
+        </Column>
+      ))}
     </Meter>
   );
 }

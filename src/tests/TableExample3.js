@@ -48,20 +48,15 @@ function generateRandomNumber(min, max) {
 }
 
 function TableExample3() {
-  const { data, isLoading, refetch } = useQuery(
-    'fetchWeapons',
-    async function () {
-      try {
-        const result = await axios.get(
-          `https://army-server.herokuapp.com/api/v1/weapons`
-        );
-        return result.data;
-      } catch (err) {
-        console.error(err);
-        return [];
-      }
+  const { data, isLoading, refetch } = useQuery('fetchWeapons', async () => {
+    try {
+      const result = await axios.get('https://army-server.herokuapp.com/api/v1/weapons');
+      return result.data;
+    } catch (err) {
+      console.error(err);
+      return [];
     }
-  );
+  });
 
   const columns = React.useMemo(
     () => [
@@ -72,37 +67,29 @@ function TableExample3() {
       {
         Header: 'Created',
         accessor: 'createdAt',
-        Cell: ({ value }) => {
-          return DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED);
-        },
+        Cell: ({ value }) => DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED),
       },
       {
         Header: 'Bar Example',
         accessor: 'barColumn',
-        Cell: ({ value }) => {
-          return <StackedBar columns={value} />;
-        },
+        Cell: ({ value }) => <StackedBar columns={value} />,
       },
     ],
-    []
+    [],
   );
 
   const fixedData = React.useMemo(() => {
     if (isLoading && !data) {
       return [];
     }
-    return data.map((item) => {
-      return {
-        ...item,
-        barColumn: [1, 2, 3, 4, 5].map((barValue) => {
-          return {
-            name: `color-${barValue}`,
-            bgColor: generateRandomColor(),
-            value: generateRandomNumber(1, 50),
-          };
-        }),
-      };
-    });
+    return data.map((item) => ({
+      ...item,
+      barColumn: [1, 2, 3, 4, 5].map((barValue) => ({
+        name: `color-${barValue}`,
+        bgColor: generateRandomColor(),
+        value: generateRandomNumber(1, 50),
+      })),
+    }));
   }, [data, isLoading]);
 
   if (isLoading) {

@@ -11,42 +11,30 @@ function StackedBarExample() {
     { name: 'grapes', bgColor: '#805ad5', value: 12 },
   ]);
 
-  const handleChangeColumnValue = (oldColumns, index, value) => {
-    return oldColumns.map((column, i) => {
-      if (index === i) {
-        return {
-          ...column,
-          value,
-        };
-      }
-      return column;
-    });
-  };
+  const handleChangeColumnValue = (oldColumns, index, value) => oldColumns.map((column, i) => {
+    if (index === i) {
+      return {
+        ...column,
+        value,
+      };
+    }
+    return column;
+  });
 
-  const renderInputNumber = (index) => {
-    return (
-      <input
-        key={`input-${index}`}
-        type="number"
-        value={columns[index].value}
-        onChange={(e) =>
-          setColumns((oldColumns) => {
-            return handleChangeColumnValue(oldColumns, index, e.target.value);
-          })
-        }
-        min={0}
-      />
-    );
-  };
+  const renderInputNumber = (index) => (
+    <input
+      key={`input-${index}`}
+      type="number"
+      value={columns[index].value}
+      onChange={(e) => setColumns((oldColumns) => handleChangeColumnValue(oldColumns, index, e.target.value))}
+      min={0}
+    />
+  );
 
   return (
     <div style={{ padding: 40 }}>
-      <div
-        style={{ display: 'flex', justifyContent: 'space-between', margin: 20 }}
-      >
-        {[0, 1, 2, 3, 4, 5].map((index) => {
-          return renderInputNumber(index);
-        })}
+      <div style={{ display: 'flex', justifyContent: 'space-between', margin: 20 }}>
+        {[0, 1, 2, 3, 4, 5].map((index) => renderInputNumber(index))}
       </div>
 
       <StackedBar columns={columns} />

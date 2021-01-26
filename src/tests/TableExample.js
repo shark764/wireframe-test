@@ -39,11 +39,9 @@ const Styles = styled.div`
 `;
 
 function TableExample() {
-  const { data, isLoading } = useQuery('fetchWeapons', async function () {
+  const { data, isLoading } = useQuery('fetchWeapons', async () => {
     try {
-      const result = await axios.get(
-        `https://army-server.herokuapp.com/api/v1/weapons`
-      );
+      const result = await axios.get('https://army-server.herokuapp.com/api/v1/weapons');
       return result.data;
     } catch (err) {
       console.error(err);
@@ -60,19 +58,15 @@ function TableExample() {
       {
         Header: 'Created',
         accessor: 'createdAt',
-        Cell: ({ value }) => {
-          return DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED);
-        },
+        Cell: ({ value }) => DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED),
       },
       {
         Header: 'Updated',
         accessor: 'updatedAt',
-        Cell: ({ value }) => {
-          return DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED);
-        },
+        Cell: ({ value }) => DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED),
       },
     ],
-    []
+    [],
   );
 
   if (isLoading) {

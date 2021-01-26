@@ -23,7 +23,7 @@ function DataTable({ columns, data }) {
       data,
       initialState: { pageIndex: 0 },
     },
-    usePagination
+    usePagination,
   );
 
   return (
@@ -39,7 +39,7 @@ function DataTable({ columns, data }) {
               canPreviousPage,
             },
             null,
-            2
+            2,
           )}
         </code>
       </pre>
@@ -58,11 +58,9 @@ function DataTable({ columns, data }) {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  );
-                })}
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                ))}
               </tr>
             );
           })}
@@ -70,45 +68,57 @@ function DataTable({ columns, data }) {
       </table>
 
       <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+        <button type="button" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+        </button>
+        {' '}
+        <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage}>
           {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
+        </button>
+        {' '}
+        <button type="button" onClick={() => nextPage()} disabled={!canNextPage}>
           {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+        </button>
+        {' '}
+        <button type="button" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
           {'>>'}
-        </button>{' '}
+        </button>
+        {' '}
         <span>
-          Page{' '}
+          Page
+          {' '}
           <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
+            {pageIndex + 1}
+            {' of '}
+            {pageOptions.length}
+          </strong>
+          {' '}
         </span>
         <span>
-          | Go to page:{' '}
+          | Go to page:
+          {' '}
           <input
             type="number"
             defaultValue={pageIndex + 1}
             onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
+              const gtPage = e.target.value ? Number(e.target.value) - 1 : 0;
+              gotoPage(gtPage);
             }}
             style={{ width: '100px' }}
           />
-        </span>{' '}
+        </span>
+        {' '}
         <select
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value));
           }}
         >
-          {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
+          {[5, 10, 20, 30, 40, 50, 100].map((optPageSize) => (
+            <option key={optPageSize} value={optPageSize}>
+              Show
+              {' '}
+              {optPageSize}
             </option>
           ))}
         </select>

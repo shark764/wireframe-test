@@ -18,34 +18,28 @@ function List() {
     setFormState,
   } = useContext(ArmyContext);
 
-  const { data, isLoading } = useQuery('fetchWeapons', async function () {
-    return axios
-      .get(`https://army-server.herokuapp.com/api/v1/weapons`)
-      .then((result) => {
-        return result.data;
-      })
-      .catch((err) => {
-        console.error(err);
-        return [];
-      });
-  });
+  const { data, isLoading } = useQuery('fetchWeapons', async () => axios
+    .get('https://army-server.herokuapp.com/api/v1/weapons')
+    .then((result) => result.data)
+    .catch((err) => {
+      console.error(err);
+      return [];
+    }));
 
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation(
-    async function (id) {
-      return axios.delete(`https://army-server.herokuapp.com/api/v1/weapons/${id}`);
-    },
+    async (id) => axios.delete(`https://army-server.herokuapp.com/api/v1/weapons/${id}`),
     {
-      onSuccess: function ({ data }) {
-        log('success', data.message, data.data);
+      onSuccess(res) {
+        log('success', res.data.message, res.data.data);
         queryClient.invalidateQueries('fetchWeapons');
       },
-      onError: function (err) {
+      onError(err) {
         console.error(err);
       },
-      onSettled: function () {},
-    }
+      onSettled() {},
+    },
   );
 
   const removeEntry = useCallback(
@@ -55,7 +49,7 @@ function List() {
         setFormState({}, undefined);
       }
     },
-    [deleteMutation, selected.id, setFormState]
+    [deleteMutation, selected.id, setFormState],
   );
 
   const columns = React.useMemo(
@@ -67,35 +61,29 @@ function List() {
       {
         Header: 'Created',
         accessor: 'createdAt',
-        Cell: ({ value }) => {
-          return DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED);
-        },
+        Cell: ({ value }) => DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED),
       },
       {
         Header: 'Updated',
         accessor: 'updatedAt',
-        Cell: ({ value }) => {
-          return DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED);
-        },
+        Cell: ({ value }) => DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_MED),
       },
       {
         Header: '',
         accessor: 'actions',
-        Cell: ({ row }) => {
-          return (
-            <div>
-              <button type="button" onClick={() => setFormState(row.original, true)}>
-                Edit
-              </button>
-              <button type="button" onClick={() => removeEntry(row.original.id)}>
-                Remove
-              </button>
-            </div>
-          );
-        },
+        Cell: ({ row }) => (
+          <div>
+            <button type="button" onClick={() => setFormState(row.original, true)}>
+              Edit
+            </button>
+            <button type="button" onClick={() => removeEntry(row.original.id)}>
+              Remove
+            </button>
+          </div>
+        ),
       },
     ],
-    [removeEntry, setFormState]
+    [removeEntry, setFormState],
   );
 
   if (isLoading) {

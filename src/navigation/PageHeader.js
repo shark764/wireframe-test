@@ -72,29 +72,27 @@ function PageHeader() {
             return false;
           }
 
-          return '/' === location.pathname;
+          return location.pathname === '/';
         }}
       >
         <Logo src={logo} alt="logo" />
       </LogoLink>
       <Nav>
-        {links.map((link) => {
-          return (
-            <StyledNavLink
-              to={link.to}
-              key={link.to}
-              isActive={(match, location) => {
-                if (!match) {
-                  return false;
-                }
+        {links.map((link) => (
+          <StyledNavLink
+            to={link.to}
+            key={link.to}
+            isActive={(match, location) => {
+              if (!match) {
+                return false;
+              }
 
-                return link.to === location.pathname;
-              }}
-            >
-              <span>{link.label}</span>
-            </StyledNavLink>
-          );
-        })}
+              return link.to === location.pathname;
+            }}
+          >
+            <span>{link.label}</span>
+          </StyledNavLink>
+        ))}
       </Nav>
     </Header>
   );

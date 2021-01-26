@@ -19,7 +19,8 @@ function ArmyProvider({ children }) {
         selectedEntity,
         open,
         setFormState,
-      }}>
+      }}
+    >
       {children}
     </ArmyContext.Provider>
   );

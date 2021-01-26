@@ -18,27 +18,23 @@ function FormLayout({ onSubmit, initialValues = {} }) {
 
       <FormField label="Type">
         <select name="type" ref={register({ required: true })}>
-          <option value=""></option>
-          {types.map((option) => {
-            return (
-              <option key={option.value} value={option.value}>
-                {option.text}
-              </option>
-            );
-          })}
+          <option value="" />
+          {types.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.text}
+            </option>
+          ))}
         </select>
       </FormField>
 
       <FormField label="Calibre">
         <select name="calibre" ref={register({ required: true })}>
-          <option value=""></option>
-          {calibres.map((option) => {
-            return (
-              <option key={option.value} value={option.value}>
-                {option.text}
-              </option>
-            );
-          })}
+          <option value="" />
+          {calibres.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.text}
+            </option>
+          ))}
         </select>
       </FormField>
 

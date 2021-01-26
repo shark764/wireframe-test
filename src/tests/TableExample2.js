@@ -38,11 +38,9 @@ const Styles = styled.div`
 `;
 
 function TableExample2() {
-  const resAlbums = useQuery('fetchAlbums', async function () {
+  const resAlbums = useQuery('fetchAlbums', async () => {
     try {
-      const result = await axios.get(
-        `https://jsonplaceholder.typicode.com/albums`
-      );
+      const result = await axios.get('https://jsonplaceholder.typicode.com/albums');
       return result.data;
     } catch (err) {
       console.error(err);
@@ -52,11 +50,9 @@ function TableExample2() {
 
   const resPhotos = useQuery(
     'fetchPhotos',
-    async function () {
+    async () => {
       try {
-        const result = await axios.get(
-          `https://jsonplaceholder.typicode.com/photos`
-        );
+        const result = await axios.get('https://jsonplaceholder.typicode.com/photos');
         return result.data;
       } catch (err) {
         console.error(err);
@@ -65,7 +61,7 @@ function TableExample2() {
     },
     {
       enabled: !resAlbums.isLoading,
-    }
+    },
   );
 
   const columns = React.useMemo(
@@ -77,24 +73,19 @@ function TableExample2() {
       { Header: 'Album', accessor: 'album' },
       { Header: 'Thumbnail URL', accessor: 'thumbnailUrl' },
     ],
-    []
+    [],
   );
 
-  const fixData = useCallback(
-    function () {
-      // callback
-      if (!(resAlbums.data && resPhotos.data)) {
-        return [];
-      }
-      return resPhotos.data.map((photo) => {
-        photo.album = resAlbums.data.find((album) => {
-          return album.id === photo.albumId;
-        }).title;
-        return photo;
-      });
-    },
-    [resAlbums.data, resPhotos.data]
-  );
+  const fixData = useCallback(() => {
+    // callback
+    if (!(resAlbums.data && resPhotos.data)) {
+      return [];
+    }
+    return resPhotos.data.map((photo) => {
+      photo.album = resAlbums.data.find((album) => album.id === photo.albumId).title;
+      return photo;
+    });
+  }, [resAlbums.data, resPhotos.data]);
 
   const data = React.useMemo(() => fixData(), [fixData]);
 

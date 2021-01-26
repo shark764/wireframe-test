@@ -33,27 +33,19 @@ function Tests() {
       break;
   }
 
-  const options = [
-    'table',
-    'table2',
-    'stacked-bar',
-    'table-stacked-bar',
-    'form',
-    'list-form',
-  ];
+  const options = ['table', 'table2', 'stacked-bar', 'table-stacked-bar', 'form', 'list-form'];
 
   return (
     <div>
-      Examples{' '}
+      Examples
+      {' '}
       <select onChange={(e) => setExample(e.target.value)}>
         <option value="">-- pick an example --</option>
-        {options.map((option) => {
-          return (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          );
-        })}
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
       </select>
       {content}
     </div>

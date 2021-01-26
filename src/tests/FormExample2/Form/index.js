@@ -1,11 +1,10 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import styled from 'styled-components';
 import { log } from '../../../utilities';
 import { ArmyContext } from '../context';
 import FormLayout from './FormLayout';
-
-import styled from 'styled-components';
 
 const FormContainer = styled.div`
   grid-area: form;
@@ -43,34 +42,33 @@ function Form() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
-    function ({ data, id }) {
+    ({ data, id }) => {
       if (!id) {
-        return axios.post(`https://army-server.herokuapp.com/api/v1/weapons`, data, {
-          headers: {
-            Accept: 'application/json',
-            'Content-type': 'application/json',
-          },
-        });
-      } else {
-        return axios.put(`https://army-server.herokuapp.com/api/v1/weapons/${id}`, data, {
+        return axios.post('https://army-server.herokuapp.com/api/v1/weapons', data, {
           headers: {
             Accept: 'application/json',
             'Content-type': 'application/json',
           },
         });
       }
+      return axios.put(`https://army-server.herokuapp.com/api/v1/weapons/${id}`, data, {
+        headers: {
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+      });
     },
     {
-      onSuccess: function ({ data }) {
+      onSuccess({ data }) {
         log('success', data.message, data.data);
         queryClient.invalidateQueries('fetchWeapons');
         setSelected(data.data);
       },
-      onError: function (err) {
+      onError(err) {
         console.error(err);
       },
-      onSettled: function () {},
-    }
+      onSettled() {},
+    },
   );
 
   const onSubmit = (values) => {

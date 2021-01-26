@@ -2,7 +2,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 function FormExample() {
-  const { register, handleSubmit, watch, errors } = useForm({
+  const {
+    register, handleSubmit, watch, errors,
+  } = useForm({
     defaultValues: {
       example: 'test',
       exampleRequired: '',
@@ -30,7 +32,9 @@ function FormExample() {
         />
         {errors.exampleRequired && (
           <p>
-            {errors.exampleRequired.type}: {errors.exampleRequired.message}
+            {errors.exampleRequired.type}
+            :
+            {errors.exampleRequired.message}
           </p>
         )}
         <input name="firstName" ref={register} />
