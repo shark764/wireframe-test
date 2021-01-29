@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Meter = styled.div`
@@ -33,5 +34,15 @@ function StackedBar({ columns }) {
     </Meter>
   );
 }
+
+StackedBar.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      bgColor: PropTypes.string,
+      name: PropTypes.string,
+      value: PropTypes.number,
+    }),
+  ),
+};
 
 export default StackedBar;

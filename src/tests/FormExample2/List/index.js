@@ -86,9 +86,12 @@ function List() {
     [removeEntry, setFormState],
   );
 
-  if (isLoading) {
-    return null;
-  }
+  const tdata = React.useMemo(() => {
+    if (isLoading && !data) {
+      return [];
+    }
+    return data;
+  }, [isLoading, data]);
 
   return (
     <ListContainer>
@@ -96,7 +99,7 @@ function List() {
         + Register
       </button>
 
-      <TableLayout columns={columns} data={data} />
+      <TableLayout columns={columns} data={tdata} isLoading={isLoading} />
     </ListContainer>
   );
 }

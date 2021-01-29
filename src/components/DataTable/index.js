@@ -1,130 +1,117 @@
 import React from 'react';
-import { usePagination, useTable } from 'react-table';
+import PropTypes from 'prop-types';
+import { useFlexLayout, usePagination, useTable } from 'react-table';
+import styled from 'styled-components';
+import LoadSpinner from '../LoadSpinner';
+import Pagination from './Pagination';
 
-function DataTable({ columns, data }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable(
+const TrText = styled.span`
+  display: block;
+  text-align: center;
+  margin: 5px;
+  color: ${({ theme }) => theme.colors.secondary};
+`;
+
+function DataTable({
+  columns,
+  data,
+  showPagination = false,
+  PaginationComponent = Pagination,
+  pageSizeOptions = [5, 10, 20, 30, 40, 50, 100],
+  loading = false,
+  noDataText = 'No records found',
+}) {
+  const defaultColumn = React.useMemo(
+    () => ({
+      // When using the useFlexLayout:
+      minWidth: 30, // minWidth is only used as a limit for resizing
+      width: 150, // width is used for both the flex-basis and flex-grow
+      maxWidth: 200, // maxWidth is only used as a limit for resizing
+    }),
+    [],
+  );
+
+  const dataTable = useTable(
     {
       columns,
       data,
+      defaultColumn,
       initialState: { pageIndex: 0 },
     },
+    useFlexLayout,
     usePagination,
   );
+  const {
+    getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, page,
+  } = dataTable;
+
+  const trData = showPagination ? page : rows;
 
   return (
     <>
-      <pre>
-        <code>
-          {JSON.stringify(
-            {
-              pageIndex,
-              pageSize,
-              pageCount,
-              canNextPage,
-              canPreviousPage,
-            },
-            null,
-            2,
-          )}
-        </code>
-      </pre>
-      <table {...getTableProps()}>
-        <thead>
+      <div {...getTableProps()} className="table">
+        <div className="thead">
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <div {...column.getHeaderProps()} className="th">
+                  {column.render('Header')}
+                </div>
               ))}
-            </tr>
+            </div>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                ))}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-
-      <div className="pagination">
-        <button type="button" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>
-        {' '}
-        <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>
-        {' '}
-        <button type="button" onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>
-        {' '}
-        <button type="button" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>
-        {' '}
-        <span>
-          Page
-          {' '}
-          <strong>
-            {pageIndex + 1}
-            {' of '}
-            {pageOptions.length}
-          </strong>
-          {' '}
-        </span>
-        <span>
-          | Go to page:
-          {' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const gtPage = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(gtPage);
-            }}
-            style={{ width: '100px' }}
-          />
-        </span>
-        {' '}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[5, 10, 20, 30, 40, 50, 100].map((optPageSize) => (
-            <option key={optPageSize} value={optPageSize}>
-              Show
-              {' '}
-              {optPageSize}
-            </option>
-          ))}
-        </select>
+        </div>
+        <div {...getTableBodyProps()} className="tbody">
+          {(loading && (
+            <div className="tr">
+              <div className="td">
+                <TrText>Loading...</TrText>
+                <LoadSpinner type="simple" size={25} weight={4} secondary />
+              </div>
+            </div>
+          ))
+            || (!loading
+              && trData.length > 0
+              && trData.map((row) => {
+                prepareRow(row);
+                return (
+                  <div {...row.getRowProps()} className="tr">
+                    {row.cells.map((cell) => (
+                      <div {...cell.getCellProps()} className="td">
+                        {cell.render('Cell')}
+                      </div>
+                    ))}
+                  </div>
+                );
+              }))
+            || (!loading && trData.length === 0 && <TrText>{noDataText}</TrText>)}
+        </div>
       </div>
+
+      {showPagination && trData.length > 0 && <PaginationComponent {...dataTable} pageSizeOptions={pageSizeOptions} />}
     </>
   );
 }
+
+DataTable.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      Header: PropTypes.string,
+      accessor: PropTypes.string,
+      // eslint-disable-next-line react/forbid-prop-types
+      Cell: PropTypes.any,
+    }),
+  ),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
+  ),
+  showPagination: PropTypes.bool,
+  pageSizeOptions: PropTypes.arrayOf(PropTypes.number),
+  PaginationComponent: PropTypes.node,
+  loading: PropTypes.bool,
+  noDataText: PropTypes.string,
+};
 
 export default DataTable;

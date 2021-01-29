@@ -9,6 +9,7 @@ const Container = styled.div`
   grid-template-areas: 'list form';
   padding-left: 20px;
   padding-right: 20px;
+  grid-template-columns: 1fr auto;
 `;
 
 function FormExample2() {

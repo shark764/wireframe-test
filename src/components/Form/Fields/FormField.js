@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Field = styled.div`
@@ -20,5 +21,10 @@ function FormField({ label, children, ...rest }) {
     </Field>
   );
 }
+
+FormField.propTypes = {
+  label: PropTypes.string,
+  children: PropTypes.node,
+};
 
 export default FormField;
